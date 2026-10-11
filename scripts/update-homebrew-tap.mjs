@@ -4,9 +4,12 @@
 // source repository. Never downgrade a manually seeded, newer binary release.
 import fs from 'node:fs/promises';
 import os from 'node:os';
+import process from 'node:process';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+
+const HTTP_METHOD_HEAD = 'HEAD';
 
 export function compareStableVersions(left, right) {
   const parts = (value) => {
@@ -36,7 +39,10 @@ export async function updateHomebrewTap({ root = process.cwd(), fetchImpl = fetc
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'lingva-brew-update-'));
   try {
     await fs.writeFile(path.join(temporary, 'SHA256SUMS'), await checksumResponse.text());
-    execFileSync(process.execPath, ['scripts/render-homebrew-formula.mjs', temporary, version], { cwd: root });
+    execFileSync(process.execPath, ['scripts/render-homebrew-formula.mjs', temporary, version], {
+      cwd: root,
+      stdio: 'pipe',
+    });
     // Verify all four public URLs before replacing a working formula. Its SHA256
     // entries remain the release's authority; Homebrew verifies archive integrity.
     for (const target of [
@@ -45,7 +51,7 @@ export async function updateHomebrewTap({ root = process.cwd(), fetchImpl = fetc
       'aarch64-unknown-linux-gnu',
       'x86_64-unknown-linux-musl',
     ]) {
-      const response = await fetchImpl(`${base}/lingva-${target}.tar.gz`, { method: 'HEAD' });
+      const response = await fetchImpl(`${base}/lingva-${target}.tar.gz`, { method: HTTP_METHOD_HEAD });
       if (!response.ok) throw new Error(`Public ${target} archive unavailable: ${response.status}`);
     }
     await fs.copyFile(path.join(temporary, 'lingva.rb'), formulaPath);
