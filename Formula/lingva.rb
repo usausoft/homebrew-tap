@@ -1,26 +1,26 @@
 class Lingva < Formula
   desc "Standalone CLI for the Lingva localization platform"
   homepage "https://lingva.dev"
-  version "0.1.3"
+  version "0.1.4"
   license :cannot_represent
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/usausoft/homebrew-tap/releases/download/cli/v0.1.3/lingva-aarch64-apple-darwin.tar.gz"
-      sha256 "c31d78bb2f16a2a5114f17acb9fa480670cea68d5f4c9b1649791dd65ace35cf"
+      url "https://unpkg.com/@lingva/cli@0.1.4/assets/lingva-aarch64-apple-darwin.tar.gz"
+      sha256 "427bf1609f804e46ca2e4b25ca64a63b465f25df2688dba55ac507e092c78ef6"
     else
-      url "https://github.com/usausoft/homebrew-tap/releases/download/cli/v0.1.3/lingva-x86_64-apple-darwin.tar.gz"
-      sha256 "e816ca9b6437fc6a6f4c5c9065ae8cf961eb33e3ce125ef061fb36265c8738ab"
+      url "https://unpkg.com/@lingva/cli@0.1.4/assets/lingva-x86_64-apple-darwin.tar.gz"
+      sha256 "9ad614a0426535fcd497f06c745af5aaafe8783b14c31590a56c7e6180f2af53"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/usausoft/homebrew-tap/releases/download/cli/v0.1.3/lingva-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "bdf434e82d320cff3f11b590a5167e92a40d48c515a0eae81f187ee59b017095"
+      url "https://unpkg.com/@lingva/cli@0.1.4/assets/lingva-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "c81f0cd10c33da8b7afc119d2e39ed89188142d2052c0250e3267ec0ea0d8ca4"
     else
-      url "https://github.com/usausoft/homebrew-tap/releases/download/cli/v0.1.3/lingva-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "9ca0d9494c241191cb88211c9db8586b03ebb4d496eff9958ef3ea488c095fcb"
+      url "https://unpkg.com/@lingva/cli@0.1.4/assets/lingva-x86_64-unknown-linux-musl.tar.gz"
+      sha256 "ea0a8033e580f78ff314d83c74b6656dac600f193e2673fe7b88ed62872aeba1"
     end
   end
 
