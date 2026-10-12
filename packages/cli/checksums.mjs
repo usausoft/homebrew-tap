@@ -6,7 +6,7 @@
  * lookup table.
  */
 export function parseChecksumFile(source) {
-  const entries = {};
+  const entries = Object.create(null);
 
   for (const rawLine of source.trim().split(/\r?\n/u)) {
     const match = /^([a-f\d]{64})\s+\*?(.+)$/iu.exec(rawLine.trim());
@@ -15,8 +15,12 @@ export function parseChecksumFile(source) {
     }
 
     const [, checksum, file] = match;
+    if (Object.hasOwn(entries, file)) {
+      throw new Error(`Duplicate SHA256SUMS entry: ${file}`);
+    }
     entries[file] = checksum.toLowerCase();
   }
 
-  return entries;
+  // Preserve the public plain-object contract without __proto__ assignment.
+  return { ...entries };
 }
